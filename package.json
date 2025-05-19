@@ -1,0 +1,77 @@
+{
+  "private": true,
+  "name": "dzcap",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./lib/index.js"
+    },
+    "./delegation": {
+      "types": "./delegation.ts",
+      "default": "./lib/delegation.js"
+    },
+    "./did": {
+      "types": "./did.ts",
+      "default": "./lib/did.js"
+    },
+    "./did-key": {
+      "types": "./did-key.ts",
+      "default": "./lib/did-key.js"
+    },
+    "./document-loader": {
+      "types": "./document-loader.ts",
+      "default": "./lib/document-loader.js"
+    },
+    "./http-signature": {
+      "types": "./http-signature.ts",
+      "default": "./lib/http-signature.js"
+    },
+    "./invocation": {
+      "types": "./invocation.ts",
+      "default": "./lib/invocation.js"
+    },
+    "./invocation-http-signature": {
+      "types": "./invocation-http-signature.ts",
+      "default": "./lib/invocation-http-signature.js"
+    },
+    "./invocation-json": {
+      "types": "./invocation-json.ts",
+      "default": "./lib/invocation-json.js"
+    },
+    "./types": {
+      "types": "./types.ts",
+      "default": "./lib/types.js"
+    },
+    "./zcap-invocation-request": {
+      "types": "./zcap-invocation-request.ts",
+      "default": "./lib/zcap-invocation-request.js"
+    }
+  },
+  "scripts": {
+    "test": "glob -c 'node --import tsx --test' '*.test.*'",
+    "tsc": "tsc --build",
+    "prepare": "npm run tsc"
+  },
+  "dependencies": {
+    "@did.coop/did-key-ed25519": "^0.0.9",
+    "@digitalbazaar/did-method-key": "^5.2.0",
+    "@digitalbazaar/ed25519-multikey": "^1.3.0",
+    "@digitalbazaar/ed25519-signature-2020": "^5.4.0",
+    "@digitalbazaar/http-signature-zcap-invoke": "^6.0.0",
+    "@digitalbazaar/http-signature-zcap-verify": "^11.1.1",
+    "@digitalbazaar/security-context": "^1.0.1",
+    "@digitalbazaar/zcap": "^9.0.1",
+    "@digitalbazaar/zcap-context": "^2.0.1",
+    "@digitalcredentials/did-method-key": "^2.0.3",
+    "authorization-signature": "^1.0.0",
+    "jsonld-document-loader": "^2.2.0",
+    "jsonld-signatures": "^11.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.12.0",
+    "glob": "^11.0.0"
+  }
+}

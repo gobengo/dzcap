@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "checkJs": true,
+    "sourceMap": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "types": [
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "include": [],
+  "exclude": [
+    "node_modules",
+  ],
+  "references": [
+  ]
+}
