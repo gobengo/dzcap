@@ -6,12 +6,12 @@ import { parseRequest, parseSignatureHeader } from '@digitalbazaar/http-signatur
 // @ts-expect-error no types
 import { verifyCapabilityInvocation as dbVerifyCapabilityInvocation } from '@digitalbazaar/http-signature-zcap-verify'
 // @ts-expect-error no types
-import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import { Ed25519Signature2020 } from '@digitalbazaar/ed25519-signature-2020';
 import { getVerifierForKeyId } from "@did.coop/did-key-ed25519/verifier"
 
 export class MissingRequiredHeaderError extends Error {
   constructor(
-    headerName: 'authorization'|'capability-invocation',
+    headerName: 'authorization' | 'capability-invocation',
     message: string = `missing required header ${headerName}`,
     options?: ErrorOptions,
   ) {
@@ -23,13 +23,13 @@ interface IHttpRequestCapabilityInvocation extends ICapabilityInvocation {
   headerValue: string
 }
 
-export async function createCapabilityInvocationFromRequest(request: Request): Promise<IHttpRequestCapabilityInvocation|MissingRequiredHeaderError> {
+export async function createCapabilityInvocationFromRequest(request: Request): Promise<IHttpRequestCapabilityInvocation | MissingRequiredHeaderError> {
   const authorizationHeader = request.headers.get('authorization')
-  if ( ! authorizationHeader) {
+  if (!authorizationHeader) {
     return new MissingRequiredHeaderError('authorization')
   }
   const capabilityInvocationHeader = request.headers.get('capability-invocation')
-  if ( ! capabilityInvocationHeader) {
+  if (!capabilityInvocationHeader) {
     return new MissingRequiredHeaderError('capability-invocation')
   }
   const id = crypto.randomUUID()
@@ -39,8 +39,8 @@ export async function createCapabilityInvocationFromRequest(request: Request): P
     ? new Date(parseInt(parsedAuthorizationHeader.params.expires) * 1000)
     : undefined
   const created = typeof parsedAuthorizationHeader.params.created === 'string'
-  ? new Date(parseInt(parsedAuthorizationHeader.params.created) * 1000)
-  : undefined
+    ? new Date(parseInt(parsedAuthorizationHeader.params.created) * 1000)
+    : undefined
   const invocation: IHttpRequestCapabilityInvocation = {
     headerValue: authorizationHeader,
     id,
@@ -68,9 +68,9 @@ export type IDocumentLoader = (url: string) => Promise<{
 
 export async function verifyCapabilityInvocation(request: Request, options: {
   documentLoader: IDocumentLoader
-  expectedHost?: string 
+  expectedHost?: string
   expectedTarget: string
-  expectedRootCapability: string|IZcapCapability[]
+  expectedRootCapability: string | IZcapCapability[]
   expectedAction?: string
 }) {
   const invocation = await createCapabilityInvocationFromRequest(request)
@@ -85,10 +85,10 @@ export async function verifyCapabilityInvocation(request: Request, options: {
     url: zcapInvocationTarget.toString(),
     method: request.method,
     suite: new Ed25519Signature2020(),
-    headers: Object.fromEntries(request.headers.entries()),
+    headers: Object.fromEntries([...request.headers as unknown as { [Symbol.iterator]: () => IterableIterator<[string, string]> }]),
     async getVerifier(o: { keyId: string }) {
       const keyId = o.keyId
-      if ( ! keyId) {
+      if (!keyId) {
         throw new Error(`unable to determine verifier for unspecified keyId`, { cause: o })
       }
       return getVerifierForKeyId(keyId)
@@ -102,12 +102,12 @@ export async function verifyCapabilityInvocation(request: Request, options: {
   }
   if (verificationResult.verified !== true) {
     throw new Error('unable to verify capability invocation', {
-      cause: {verificationResult}
+      cause: { verificationResult }
     })
   }
 }
 
-function urlWithProtocol(url: string|URL, protocol: `${string}:`): URL {
+function urlWithProtocol(url: string | URL, protocol: `${string}:`): URL {
   const url2 = new URL(url)
   url2.protocol = protocol
   return url2

@@ -8,18 +8,17 @@
     "skipLibCheck": true,
     "checkJs": true,
     "sourceMap": true,
+    "outDir": "lib",
     "lib": [
       "ESNext",
       "DOM"
     ],
-    "types": [
-    ],
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
-  "include": [],
   "exclude": [
     "node_modules",
+    "lib"
   ],
   "references": [
   ]
