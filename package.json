@@ -52,7 +52,7 @@
   },
   "scripts": {
     "test": "glob -c 'node --import tsx --test' '*.test.*'",
-    "tsc": "tsc --build",
+    "tsc": "npx tsc --build",
     "prepare": "npm run tsc"
   },
   "dependencies": {
