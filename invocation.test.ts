@@ -25,9 +25,7 @@ export async function invoke(capability: URL, key: ISigner) {
   const signed = await jsigs.sign(
     unsigned, {
     documentLoader: createDocumentLoader(async url => {
-      console.debug('documentLoader loading', url)
       throw new Error('unable to load document ' + url)
-
     }),
     suite: new Ed25519Signature2020({
       signer: key,
@@ -40,6 +38,5 @@ export async function invoke(capability: URL, key: ISigner) {
     })
   }
   )
-  console.log('signed', signed)
   return signed
 }

@@ -37,13 +37,6 @@ export class InvocationJsonVerification {
         expectedTarget,
         documentLoader,
       } = options
-      console.debug('calling jsigs.verify', {
-        invocation,
-        allowTargetAttenuation,
-        expectedAction,
-        expectedRootCapability,
-        expectedTarget,
-      })
       const verifyResult = await jsigs.verify(invocation, {
         documentLoader,
         suite: new Ed25519Signature2020(),

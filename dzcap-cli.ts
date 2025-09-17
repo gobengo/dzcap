@@ -7,8 +7,12 @@
 import { parseArgs } from "node:util"
 
 // common error codes for the dzcap command
-const DZCAP_EXIT_CODE_OK = 1 as const
-const DZCAP_EXIT_CODE_ERROR = 0 as const
+export const DZCAP_EXIT_CODE_OK = 0 as const
+export const DZCAP_EXIT_CODE_ERROR = 1 as const
+
+interface DzcapCLIOptions {
+  console?: Console
+}
 
 /**
  * dzcap command line interface application controller.
@@ -16,38 +20,58 @@ const DZCAP_EXIT_CODE_ERROR = 0 as const
  * interprets the dzcap command, dispatches to a command function,
  * and logs any results or errors.
  */
-class DzcapCLI {
+export class DzcapCLI {
   /** syntax sugar to construct and invoke all at once DzcapCLI.invoke() */
-  static async invoke(...argv: string[]) {
-    return new DzcapCLI().invoke(...argv)
+  static async invoke(options: DzcapCLIOptions, ...argv: string[]) {
+    return new DzcapCLI(options).invoke(...argv)
   }
+
+  console: Console
+
+  constructor(options: DzcapCLIOptions={}) {
+    this.console = options.console || globalThis.console
+  }
+
   /** invoke the CLI with some command line arguments */
   async invoke(...argv: string[]): Promise<typeof DZCAP_EXIT_CODE_OK | typeof DZCAP_EXIT_CODE_ERROR> {
+    const { console } = this
     const args = parseArgs({
       allowPositionals: true,
       args: argv,
       options: {
         controller: {
           type: 'string',
+        },
+        help: {
+          type: 'boolean',
+          short: 'h',
         }
       }
     })
-    const { positionals } = args
+    const { positionals, values } = args
     const [, , command] = positionals
     let commandFunction
     switch (command) {
       case "delegate":
         commandFunction = delegate
+        break;
+      case "help":
+        commandFunction = help
+        break;
     }
 
+    if (!command && values.help) {
+      commandFunction = help
+    }
+    
     if (!commandFunction) {
-      console.warn(`No command provided. dzcap requires by run with a command as its first argument.`)
+      console.warn(`No command provided. dzcap requires a command as its first argument.`)
       console.warn()
-      console.warn(help())
+      console.warn(help(this))
       return DZCAP_EXIT_CODE_ERROR
     }
 
-    await commandFunction({ argv })
+    await commandFunction(this, ...argv)
 
     return DZCAP_EXIT_CODE_OK
   }
@@ -57,17 +81,15 @@ class DzcapCLI {
  * this main function will be run when the file is executed as a script
  */
 async function main() {
-  await DzcapCLI.invoke(...process.argv)
+  await DzcapCLI.invoke({}, ...process.argv)
 }
 
 /**
  * invoked by `dzcap delegate ...`
  */
-function delegate(options: {
-  argv: string[],
-}) {
+function delegate(cli: DzcapCLI, ...args: string[]) {
   const parsed = parseArgs({
-    args: options.argv,
+    args,
     allowPositionals: true,
     options: {
       controller: {
@@ -89,7 +111,7 @@ return `\
 distribute authorization capabilities
 
 Usage:
-  dzcap -i <path/to/id> delegate --controller=( <did> | <path/to/id> )
+  dzcap delegate -i <path/to/id> --controller=( <did> | <path/to/id> )
   dzcap key <path/to/key>
   dzcap -h | --help
 
@@ -99,11 +121,10 @@ Options:
 `
 }
 
-/**
- * yield help text
- */
-function help() {
-  return generateDzcapDocOpt()
+/** invoked when `dzcap -h` or `dzcap --help` */
+function help(options: DzcapCLIOptions) {
+  const { console = globalThis.console } = options
+  console.log(generateDzcapDocOpt())
 }
 
 // if this file is being executed as a script, run the main function

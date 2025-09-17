@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
     "composite": true,
     "target": "ESNext",
     "module": "NodeNext",
