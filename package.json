@@ -65,9 +65,12 @@
     "@digitalbazaar/zcap": "^9.0.1",
     "@digitalbazaar/zcap-context": "^2.0.1",
     "@digitalcredentials/did-method-key": "^2.0.3",
+    "@types/sshpk": "^1.17.4",
+    "@wallet.storage/did-sshpk": "github:gobengo/did-sshpk",
     "authorization-signature": "^1.0.0",
     "jsonld-document-loader": "^2.2.0",
-    "jsonld-signatures": "^11.3.2"
+    "jsonld-signatures": "^11.3.2",
+    "sshpk": "^1.18.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.19",

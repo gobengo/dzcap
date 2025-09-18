@@ -9,8 +9,8 @@ import { CapabilityDelegation } from '@digitalbazaar/zcap'
 import * as zcap from '@digitalbazaar/zcap'
 // @ts-expect-error no types
 import suiteContext2020 from 'ed25519-signature-2020-context';
-import { IZcapCapability } from './types.js';
-import { ISigner } from './types.js';
+import { type IZcapCapability } from './types.ts';
+import { type ISigner } from './types.ts';
 
 export async function delegate(options: {
   signer: ISigner,
