@@ -114,6 +114,9 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
       controller: {
         type: 'string',
       },
+      expires: {
+        type: 'string',
+      },
       identity: {
         type: 'string',
         short: 'i',
@@ -143,11 +146,17 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
 
   const parentCapability = `urn:zcap:root:${encodeURIComponent(invocationTarget)}`
 
+  // parse --expires using Date.parse
+  const expiresArg = parsed.values.expires
+  if ( ! expiresArg) throw new Error(`please provide an --expires argument`)
+  const expires = new Date(Date.parse(expiresArg))
+  if (isNaN(Number(expires))) throw new Error(`unable tp parse --expires value to a datetime`, { cause: expiresArg })
+
   // build the capability that should be signed
   const capability: IZcapCapability = {
     id: `urn:uuid:${crypto.randomUUID()}`,
     controller: controller ?? `did:todo`,
-    expires: new Date(Date.now() + 10 * 1000).toISOString(),
+    expires: expires.toISOString(),
     invocationTarget,
     parentCapability,
     "@context": [

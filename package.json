@@ -3,6 +3,7 @@
   "type": "module",
   "version": "1.0.1",
   "main": "lib/index.js",
+  "bin": "dzcap-cli.ts",
   "exports": {
     ".": {
       "types": "./index.ts",
@@ -53,7 +54,7 @@
     "eslint": "eslint",
     "lint": "npm run eslint",
     "test": "glob -c 'node --import tsx --test' '*.test.*'",
-    "tsc": "npx tsc --build",
+    "tsc": "tsc --build",
     "prepare": "npm run tsc"
   },
   "dependencies": {
@@ -69,7 +70,7 @@
     "@digitalcredentials/did-method-key": "^2.0.3",
     "@types/sshpk": "^1.17.4",
     "@wallet.storage/did-sshpk": "github:gobengo/did-sshpk",
-    "authorization-signature": "^1.0.0",
+    "authorization-signature": "^1.1.0",
     "jsonld-document-loader": "^2.2.0",
     "jsonld-signatures": "^11.3.2",
     "sshpk": "^1.18.0"
