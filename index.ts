@@ -2,6 +2,10 @@
 export const YEAR_3000_ISO8601 = '3000-01-01T00:01Z';
 export const YEAR_3000 = new Date(Date.parse(YEAR_3000_ISO8601))
 
+/**
+ * @param v - value to test
+ * @returns whether or not the provided urn satisfies syntax of a root zcap urn
+ */
 export function isRootZcapUrn(v: unknown): v is `urn:zcap:root:${string}` {
   if (typeof v !== 'string') return false
   return v.startsWith(`urn:zcap:root:`)

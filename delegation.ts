@@ -12,6 +12,15 @@ import suiteContext2020 from 'ed25519-signature-2020-context';
 import { type IZcapCapability } from './types.ts';
 import { type ISigner } from './types.ts';
 
+/**
+ * delegate a capability
+ * @param options - options
+ * @param options.signer - signs capabilityDelegation proof
+ * @param options.capability - capability that is being delegated
+ * @param options.date - date of delegation
+ * @param options.documentLoader - resolves urls for json-ld processing
+ * @returns signed delegated capability
+ */
 export async function delegate(options: {
   signer: ISigner,
   capability: IZcapCapability,

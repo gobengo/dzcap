@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 export function base64urlEncode(data: ArrayBuffer) {
   const base64Encoded = btoa(String.fromCharCode(...new Uint8Array(data)));
   const base64urlEncoded = base64Encoded

@@ -34,6 +34,10 @@ export class DzcapCliTest {
   }
 }
 
+/**
+ * this function is run when this file is executed as a script.
+ * it runs the test.
+ */
 async function main() {
   await new DzcapCliTest(await import('node:test')).run()
 }

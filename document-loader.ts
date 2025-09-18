@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 // @ts-expect-error no types
 import * as zcap from '@digitalbazaar/zcap'
 // @ts-expect-error no types

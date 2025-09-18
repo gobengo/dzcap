@@ -1,6 +1,11 @@
 import { Console } from "node:console"
 import { Writable } from "node:stream"
 
+/**
+ * create an ephemeral console, pass it to callback, and then return it
+ * @param useConsole - callback that uses the custom console
+ * @returns result of useConsole, and info about the console streams
+ */
 export async function withConsole<T>(useConsole: (console: Console) => T) {
   // create custom console
   const stdout = new TransformStream({ transform: (chunk, controller) => controller.enqueue(chunk) })

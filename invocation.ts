@@ -24,13 +24,19 @@ export interface ICapabilityInvocation {
   }
 }
 
+/**
+ * invoke a capaility, resulting in an invocation object
+ * @param capability - capability to invoke
+ * @param key - key to use to sign invocation proof
+ * @returns - signer invocation
+ */
 export async function invoke(capability: URL, key: ISigner) {
   const parentCapability = (capability instanceof URL) ? `urn:zcap:root:${encodeURIComponent(capability.toString())}` : undefined
   const unsigned = {
     '@context': ["https://w3id.org/zcap/v1"],
     invocationTarget: capability.toString()
   }
-  const signed: typeof unsigned & Pick<ICapabilityInvocation,'proof'> = await jsigs.sign(
+  const signed: typeof unsigned & Pick<ICapabilityInvocation, 'proof'> = await jsigs.sign(
     unsigned,
     {
       documentLoader: createDocumentLoader(async url => {

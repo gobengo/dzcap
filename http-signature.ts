@@ -6,6 +6,10 @@ import { base64urlToBase64, bytesFromBase64 } from "./base64.js"
 import { DIDKeyVerificationMethodId } from "./did.js";
 import { getVerifierForKeyId, ISignatureVerifier } from "@did.coop/did-key-ed25519/verifier"
 
+/**
+ * @param headers - http headers
+ * @returns simple js object for each header name/value pair. it will only have one header value per header name, i.e. this is lossy
+ */
 function headersToObject(headers: Headers) {
   const object = {}
   headers.forEach((headerValue, headerName) => {
@@ -73,6 +77,10 @@ export class HttpSignatureAuthorization {
   }
 }
 
+/**
+ * @param d - datetime to convert 
+ * @returns unix timestamp (seconds since epoch)
+ */
 function dateToUnixTimestamp(d: Date) {
   return Math.floor(d.getTime() / 1000)
 }

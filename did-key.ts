@@ -11,6 +11,10 @@ didKeyDriver.use({
   fromMultibase: Ed25519VerificationKey2020.from
 })
 
+/**
+ * @param didKey - did:key:...
+ * @returns did document
+ */
 export async function getDidDocumentFromDidKey(didKey: `did:key:${string}`) {
   const [,,publicKeyMultibase] = didKey.split(':')
   const publicKey = await Ed25519VerificationKey2020.from({
@@ -23,6 +27,13 @@ export async function getDidDocumentFromDidKey(didKey: `did:key:${string}`) {
   return didInfo.didDocument
 }
 
+/**
+ * did key verificationMethods are like `did:key:{msi}#{msi}`.
+ * This is long and redundant.
+ * So this function returns the corresponding controller DID, `did:key:{msi}`.
+ * @param verificationMethod - URI of did:key verificationMethod, e.g. did:key:{msi}#{msi}
+ * @returns DID for the verificationMethod URI `did:key:{msi}`
+ */
 export function getControllerOfDidKeyVerificationMethod(verificationMethod: DIDKeyVerificationMethodId) {
   const did = verificationMethod.split('#').at(0)
   if ( ! isDidKey(did)) {

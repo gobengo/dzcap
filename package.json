@@ -50,6 +50,8 @@
     }
   },
   "scripts": {
+    "eslint": "eslint",
+    "lint": "npm run eslint",
     "test": "glob -c 'node --import tsx --test' '*.test.*'",
     "tsc": "npx tsc --build",
     "prepare": "npm run tsc"
@@ -73,9 +75,13 @@
     "sshpk": "^1.18.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.35.0",
     "@types/node": "^22.15.19",
+    "eslint": "^9.35.0",
+    "eslint-plugin-jsdoc": "^58.1.1",
     "glob": "^11.0.0",
     "tsx": "^4.20.5",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0"
   }
 }

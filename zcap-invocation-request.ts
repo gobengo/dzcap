@@ -2,7 +2,7 @@
 import { signCapabilityInvocation } from '@digitalbazaar/http-signature-zcap-invoke'
 
 import {
-  parseRequest, parseSignatureHeader
+  parseSignatureHeader
   // @ts-expect-error no types
 } from '@digitalbazaar/http-signature-header';
 import { DIDKeyVerificationMethodId, isDidKeyVerificationMethodId } from './did.js';
@@ -15,6 +15,18 @@ export { IZcapCapability }
 export const YEAR_3000_ISO8601 = '3000-01-01T00:01Z';
 export const YEAR_3000 = new Date(Date.parse(YEAR_3000_ISO8601))
 
+/**
+ * create a DOM Request (usu. a http request) that will invoke a capability
+ * @param url - url of request target
+ * @param options - options
+ * @param options.capability - capability to invoke
+ * @param options.method - method the request will invoke
+ * @param options.headers - headers to send with request
+ * @param options.action - capability action
+ * @param options.invocationSigner - signs invocation proof
+ * @param options.body - request body
+ * @returns request with signer invocation in headers
+ */
 export async function createRequestForCapabilityInvocation(url: URL, options: {
   capability?: IZcapCapability | string,
   method?: string,

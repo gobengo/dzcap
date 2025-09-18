@@ -23,6 +23,11 @@ interface IHttpRequestCapabilityInvocation extends ICapabilityInvocation {
   headerValue: string
 }
 
+/**
+ * parse invocation from a DOM Request to invocation object
+ * @param request - request to parse invocation from
+ * @returns invocation from request
+ */
 export async function createCapabilityInvocationFromRequest(request: Request): Promise<IHttpRequestCapabilityInvocation | MissingRequiredHeaderError> {
   const authorizationHeader = request.headers.get('authorization')
   if (!authorizationHeader) {
@@ -66,6 +71,16 @@ export type IDocumentLoader = (url: string) => Promise<{
   document: unknown
 }>
 
+/**
+ * verify that an invocation has a valid proof and satisfies particular constraints
+ * @param request - request to extract invocation from
+ * @param options - options
+ * @param options.documentLoader - jsonld url resolver
+ * @param options.expectedHost - request hostname that the request MUST have
+ * @param options.expectedTarget - request target that the request MUST target
+ * @param options.expectedRootCapability - request invocation capability MUST match this
+ * @param options.expectedAction - request invocation capability MUST invoke this action
+ */
 export async function verifyCapabilityInvocation(request: Request, options: {
   documentLoader: IDocumentLoader
   expectedHost?: string
@@ -107,6 +122,11 @@ export async function verifyCapabilityInvocation(request: Request, options: {
   }
 }
 
+/**
+ * @param url  - has old protocol
+ * @param protocol - protocol of the new url
+ * @returns new url with modified protocol
+ */
 function urlWithProtocol(url: string | URL, protocol: `${string}:`): URL {
   const url2 = new URL(url)
   url2.protocol = protocol

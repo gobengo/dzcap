@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview this file should be runnable by nodejs and usable as a posix command line interface.
+ * @file this file should be runnable by nodejs and usable as a posix command line interface.
  */
 
 import { existsSync, readFileSync, realpathSync } from "node:fs"
@@ -26,7 +26,13 @@ interface DzcapCLIOptions {
  * and logs any results or errors.
  */
 export class DzcapCLI {
-  /** syntax sugar to construct and invoke all at once DzcapCLI.invoke() */
+  /**
+   * syntax sugar to construct and invoke all at once DzcapCLI.invoke()
+   * @param options - options
+   * @param options.console - custom js console
+   * @param argv - cli args
+   * @returns dzcap exit code
+   */
   static async invoke(options: DzcapCLIOptions, ...argv: string[]) {
     return new DzcapCLI(options).invoke(...argv)
   }
@@ -37,7 +43,11 @@ export class DzcapCLI {
     this.console = options.console || globalThis.console
   }
 
-  /** invoke the CLI with some command line arguments */
+  /**
+   * invoke the CLI with some command line arguments
+   * @param argv - cli args
+   * @returns exit code
+   */
   async invoke(...argv: string[]): Promise<typeof DZCAP_EXIT_CODE_OK | typeof DZCAP_EXIT_CODE_ERROR> {
     const { console } = this
     const args = parseArgs({
@@ -91,7 +101,10 @@ async function main() {
 }
 
 /**
- * invoked by `dzcap delegate ...`
+ * invoked by `dzcap delegate ...`.
+ * it should parse args, use them to sign a delegation, and log the new delegation to stdout
+ * @param cli - cli application object
+ * @param args - cli args
  */
 async function delegate(cli: DzcapCLI, ...args: string[]) {
   const parsed = parseArgs({
@@ -121,7 +134,7 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
   if (!identityArg) {
     throw new Error(`identity argument must be a path to a string`, { cause: { identityArg } })
   }
-  const identitySigner = await createSignerForIdentityArg(identityArg)
+  const identitySigner = await createSignerForIdentityPath(identityArg)
 
   const invocationTarget = parsed.values.invocationTarget
   if ( ! invocationTarget) {
@@ -151,7 +164,14 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
 
 class FileDoesNotExistError extends Error { }
 
-async function createSignerForIdentityArg(pathToKey: string, options: {
+/**
+ * create a proof signer from path to a ed25519 ssh key file
+ * @param pathToKey - path to ssh key file
+ * @param options - options
+ * @param options.keyPassPhrase - ssh key file passphrase
+ * @returns - proof signer that signs using key in identity file
+ */
+async function createSignerForIdentityPath(pathToKey: string, options: {
   keyPassPhrase?: string,
 } = {}) {
   const pathToKeyExists = typeof pathToKey === "string" && existsSync(pathToKey.toString())
@@ -166,7 +186,7 @@ async function createSignerForIdentityArg(pathToKey: string, options: {
   return signer
 }
 
-/** return help text for the dzcap cli. it should be similar to docopt.org syntax */
+/** @returns help text for the dzcap cli. it should be similar to docopt.org syntax */
 function generateDzcapDocOpt() {
   return `\
 # dzcap
@@ -184,7 +204,11 @@ Options:
 `
 }
 
-/** invoked when `dzcap -h` or `dzcap --help` */
+/**
+ * invoked when `dzcap -h` or `dzcap --help`
+ * @param options - cli options
+ * @param options.console - custom js console (override globalThis.console)
+ */
 function help(options: DzcapCLIOptions) {
   const { console = globalThis.console } = options
   console.log(generateDzcapDocOpt())

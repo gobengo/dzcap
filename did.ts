@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 export type DID<Method extends string = string> = `did:${Method}:${string}`
 
 /**

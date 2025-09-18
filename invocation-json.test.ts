@@ -7,6 +7,7 @@ import { createDocumentLoader } from "./document-loader.js"
 import { ISigner, RootZcapResolver } from "./types.js"
 import { isRootZcapUrn } from "./index.js"
 
+// eslint-disable-next-line jsdoc/require-jsdoc
 async function createExampleInvocation(url: URL, options:{
   signer?: ISigner
 }={}) {
