@@ -83,7 +83,7 @@ export class DzcapCLI {
     if (!commandFunction) {
       console.warn(`No command provided. dzcap requires a command as its first argument.`)
       console.warn()
-      console.warn(help(this))
+      help(this)
       return DZCAP_EXIT_CODE_ERROR
     }
 
@@ -95,9 +95,12 @@ export class DzcapCLI {
 
 /**
  * this main function will be run when the file is executed as a script
+ * @param options - options
+ * @param options.argv - process.argv
+ * @returns dzcap exit code
  */
-async function main() {
-  await DzcapCLI.invoke({}, ...process.argv)
+export async function main({argv=process.argv}:{argv?:string[]}={}) {
+  return await DzcapCLI.invoke({}, ...argv)
 }
 
 /**

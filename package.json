@@ -1,9 +1,11 @@
 {
   "name": "dzcap",
   "type": "module",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "main": "lib/index.js",
-  "bin": "dzcap-bin",
+  "bin": {
+    "dzcap": "bin/dzcap.js"
+  },
   "exports": {
     ".": {
       "types": "./index.ts",
@@ -70,7 +72,7 @@
     "@digitalcredentials/did-method-key": "^2.0.3",
     "@types/sshpk": "^1.17.4",
     "@wallet.storage/did-sshpk": "^0.0.6",
-    "authorization-signature": "^1.1.0",
+    "authorization-signature": "^1.2.0",
     "jsonld-document-loader": "^2.2.0",
     "jsonld-signatures": "^11.3.2",
     "sshpk": "^1.18.0"
