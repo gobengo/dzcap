@@ -1,7 +1,7 @@
 {
   "name": "dzcap",
   "type": "module",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "lib/index.js",
   "bin": {
     "dzcap": "bin/dzcap.js"
@@ -71,12 +71,12 @@
     "@digitalbazaar/zcap-context": "^2.0.1",
     "@digitalcredentials/did-method-key": "^2.0.3",
     "@types/sshpk": "^1.17.4",
-    "@wallet.storage/did-sshpk": "^0.0.6",
+    "@wallet.storage/did-sshpk": "^0.0.7",
     "authorization-signature": "^1.2.0",
     "jsonld-document-loader": "^2.2.0",
     "jsonld-signatures": "^11.3.2",
     "sshpk": "^1.18.0"
-  },
+  },  
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@types/node": "^22.15.19",
