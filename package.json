@@ -3,6 +3,7 @@
   "type": "module",
   "version": "1.0.13",
   "main": "lib/index.js",
+  "license": "MIT",
   "bin": {
     "dzcap": "bin/dzcap.js"
   },
