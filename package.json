@@ -70,7 +70,7 @@
     "@digitalcredentials/did-method-key": "^2.0.3",
     "@types/sshpk": "^1.17.4",
     "@wallet.storage/did-sshpk": "git+https://github.com/gobengo/did-sshpk.git",
-    "authorization-signature": "^1.1.0",
+    "authorization-signature": "git+https://github.com/gobengo/authorization-signature.git",
     "jsonld-document-loader": "^2.2.0",
     "jsonld-signatures": "^11.3.2",
     "sshpk": "^1.18.0"
