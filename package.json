@@ -1,9 +1,9 @@
 {
   "name": "dzcap",
   "type": "module",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "lib/index.js",
-  "bin": "dzcap-cli.ts",
+  "bin": "./dzcap-bin",
   "exports": {
     ".": {
       "types": "./index.ts",
