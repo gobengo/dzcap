@@ -110,6 +110,7 @@ export async function main({argv=process.argv}:{argv?:string[]}={}) {
  * @param args - cli args
  */
 async function delegate(cli: DzcapCLI, ...args: string[]) {
+  const { console } = cli
   const parsed = parseArgs({
     args,
     allowPositionals: true,
@@ -131,9 +132,7 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
   })
 
   const { controller } = parsed.values
-  if ( ! controller) {
-    throw new Error(`please provide an --controller`)
-  }
+
 
   // parse --identity to a signer that can sign the delegation
   const identityArg = parsed.values.identity
@@ -143,11 +142,9 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
   const identitySigner = await createSignerForIdentityPath(identityArg)
 
   const invocationTarget = parsed.values.invocationTarget
-  if ( ! invocationTarget) {
-    throw new Error(`please provide an --invocationTarget`)
-  }
+  if ( ! invocationTarget) throw new Error(`please provide an --invocationTarget <uri>`)
 
-  const parentCapability = `urn:zcap:root:${encodeURIComponent(invocationTarget)}`
+  const parentCapability = invocationTarget ? `urn:zcap:root:${encodeURIComponent(invocationTarget)}` : undefined
 
   // parse --expires using Date.parse
   const expiresArg = parsed.values.expires
