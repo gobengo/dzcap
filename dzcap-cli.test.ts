@@ -34,7 +34,8 @@ export class DzcapCliTest {
       assert.ok(stdoutText.includes('dzcap delegate'))
       assert.ok(stdoutText.includes('dzcap -h | --help'))
     });
-    await t.test(`dzcap delegate`, async t => {
+
+    await t.test(`dzcap delegate simple case`, async t => {
       const identityFile = await createTemporaryIdentityFileEd25519()
       const invocationTarget = `https://example.example/foo/bar/?baz=1`
       const [{ stdout }, exitCode] = await withConsole(async console => {
@@ -43,12 +44,14 @@ export class DzcapCliTest {
           `--identity=${identityFile}`,
           `--expires=2099-01-01`,
           `--invocationTarget=${invocationTarget}`,
+          `--allow=FOO`,
         ]);
       })
       const stdoutText = await new Response(stdout.readable).text()
       const delegation = JSON.parse(stdoutText)
       assert.equal(delegation.expires, '2099-01-01T00:00:00.000Z')
       assert.equal(exitCode, DZCAP_EXIT_CODE_OK, `exit code for dzcap indicates success`)
+      assert.ok(Array.isArray(delegation.allowedAction), `delegation.allowedAction MUST be an array`)
     })
   }
 }
@@ -63,20 +66,20 @@ async function createTemporaryIdentityFileEd25519(): Promise<string> {
   try {
     // Create a temporary directory
     const tmpDir = await mkdtemp(path.join(os.tmpdir(), 'ssh-key-'));
-    
+
     // Define the key file path
     const keyPath = path.join(tmpDir, 'id_ed25519');
-    
+
     // Generate the SSH key using ssh-keygen
     // -t ed25519: specify key type
     // -f: specify output file
     // -N "": empty passphrase
     // -q: quiet mode (suppress output)
     execSync(`ssh-keygen -t ed25519 -f "${keyPath}" -N "" -q`);
-    
+
     // Verify the key file was created
     await access(keyPath);
-    
+
     return keyPath;
   } catch (error) {
     throw new Error(`Failed to create SSH key: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
