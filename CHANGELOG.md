@@ -4,4 +4,4 @@
 
 ### Minor Changes
 
-- dzcap delegate now accepts cli flat --allow that adds to allowedAction in the output
+- dzcap delegate now accepts cli flag --allow that adds to allowedAction in the output
