@@ -1,5 +1,11 @@
 # dzcap
 
+## 1.2.0
+
+### Minor Changes
+
+- change --allow to --allowedAction
+
 ## 1.1.0
 
 ### Minor Changes
