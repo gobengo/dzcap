@@ -3,9 +3,9 @@
 import * as zcap from '@digitalbazaar/zcap'
 // @ts-expect-error no types
 import suiteContext2020 from 'ed25519-signature-2020-context';
-import { IDocumentLoader } from './invocation-http-signature.js';
-import { getDidDocumentFromDidKey } from './did-key.js'
-import { getDidForDidUri } from './did.js';
+import { type IDocumentLoader } from './invocation-http-signature.ts';
+import { getDidDocumentFromDidKey } from './did-key.ts'
+import { getDidForDidUri } from './did.ts';
 
 function isDidKey(s: unknown): s is `did:key:${string}` {
   return Boolean(typeof s === 'string' && s.match(/^did:key:([^:#]+)$/))

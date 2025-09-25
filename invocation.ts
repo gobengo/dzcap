@@ -1,11 +1,11 @@
 // @ts-expect-error no types
 import jsigs from "jsonld-signatures"
-import { createDocumentLoader } from "./document-loader.js"
+import { createDocumentLoader } from "./document-loader.ts"
 // @ts-expect-error no types
 import { Ed25519Signature2020 } from '@digitalbazaar/ed25519-signature-2020';
 // @ts-expect-error no types
 import { CapabilityInvocation } from '@digitalbazaar/zcap'
-import { ISigner } from "./types.js";
+import { type ISigner } from "./types.ts";
 
 export interface ICapabilityInvocation {
   id: string

@@ -20,4 +20,4 @@ export interface IResolvedRootZcap {
   invocationTarget: string
 }
 
-export { createRequestForCapabilityInvocation } from "./zcap-invocation-request.js"
+export { createRequestForCapabilityInvocation } from "./zcap-invocation-request.ts"

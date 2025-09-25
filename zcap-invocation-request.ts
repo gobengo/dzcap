@@ -5,11 +5,11 @@ import {
   parseSignatureHeader
   // @ts-expect-error no types
 } from '@digitalbazaar/http-signature-header';
-import { DIDKeyVerificationMethodId, isDidKeyVerificationMethodId } from './did.js';
-import { IDocumentLoader, verifyCapabilityInvocation } from './invocation-http-signature.js';
-import type { ISigner, IZcapCapability } from './types.js';
+import { type DIDKeyVerificationMethodId, isDidKeyVerificationMethodId } from './did.ts';
+import { type IDocumentLoader, verifyCapabilityInvocation } from './invocation-http-signature.ts';
+import type { ISigner, IZcapCapability } from './types.ts';
 
-export { IZcapCapability }
+export { type IZcapCapability }
 
 // date in year 3000
 export const YEAR_3000_ISO8601 = '3000-01-01T00:01Z';
@@ -56,6 +56,7 @@ export async function createRequestForCapabilityInvocation(url: URL, options: {
 }
 
 export class ZcapInvocationRequest {
+  request: Request
   static async from(request: Request) {
     return new ZcapInvocationRequest(request)
   }
@@ -79,7 +80,8 @@ export class ZcapInvocationRequest {
     )
     return new VerifiedZcapInvocationRequest(request)
   }
-  protected constructor(public request: Request) {
+  protected constructor(request: Request) {
+    this.request = request
   }
   get invoker(): DIDKeyVerificationMethodId {
     const authorization = this.request.headers.get('authorization')
