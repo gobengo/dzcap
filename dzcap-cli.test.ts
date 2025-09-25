@@ -44,7 +44,7 @@ export class DzcapCliTest {
           `--identity=${identityFile}`,
           `--expires=2099-01-01`,
           `--invocationTarget=${invocationTarget}`,
-          `--allow=FOO`,
+          `--allowedAction=FOO`,
         ]);
       })
       const stdoutText = await new Response(stdout.readable).text()
