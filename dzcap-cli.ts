@@ -115,7 +115,7 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
     args,
     allowPositionals: true,
     options: {
-      allow: {
+      allowedAction: {
         type: 'string',
         multiple: true,
       },
@@ -135,10 +135,8 @@ async function delegate(cli: DzcapCLI, ...args: string[]) {
     }
   })
 
-  const { allow } = parsed.values
+  const { allowedAction } = parsed.values
   const { controller } = parsed.values
-
-  const allowedAction = allow
 
   // parse --identity to a signer that can sign the delegation
   const identityArg = parsed.values.identity
