@@ -1,8 +1,8 @@
 import { describe, test } from "node:test"
-import { createRequestForCapabilityInvocation, ZcapInvocationRequest } from "./zcap-invocation-request.js"
+import { createRequestForCapabilityInvocation, ZcapInvocationRequest } from "./zcap-invocation-request.ts"
 import assert from "node:assert"
-import { getControllerOfDidKeyVerificationMethod } from "./did-key.js"
-import { createDocumentLoader } from "./document-loader.js"
+import { getControllerOfDidKeyVerificationMethod } from "./did-key.ts"
+import { createDocumentLoader } from "./document-loader.ts"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519"
 
 await describe(`ZcapInvocationRequest`, async () => {
@@ -35,4 +35,8 @@ await describe(`ZcapInvocationRequest`, async () => {
     const verifiedInvocation = await ZcapInvocationRequest.verified(request, { documentLoader })
     assert.equal(verifiedInvocation.invoker, alice.id)
   })
+})
+
+await describe('createRequestForCapabilityInvocation', async () => {
+
 })

@@ -4,7 +4,7 @@ import jsigs from "jsonld-signatures"
 import { Ed25519Signature2020 } from '@digitalbazaar/ed25519-signature-2020';
 // @ts-expect-error no types
 import { CapabilityInvocation } from '@digitalbazaar/zcap'
-import { IDocumentLoader } from "./invocation-http-signature.js";
+import { type IDocumentLoader } from "./invocation-http-signature.ts";
 
 /**
  * class that represents the verification of a zcap invocation as expressed in JSON-LD Signatures
