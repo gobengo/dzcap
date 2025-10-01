@@ -28,7 +28,7 @@ interface IHttpRequestCapabilityInvocation extends ICapabilityInvocation {
  * @param request - request to parse invocation from
  * @returns invocation from request
  */
-export async function createCapabilityInvocationFromRequest(request: Request): Promise<IHttpRequestCapabilityInvocation | MissingRequiredHeaderError> {
+export async function createCapabilityInvocationFromRequest(request: Pick<Request, 'headers'>) {
   const authorizationHeader = request.headers.get('authorization')
   if (!authorizationHeader) {
     return new MissingRequiredHeaderError('authorization')
@@ -46,7 +46,9 @@ export async function createCapabilityInvocationFromRequest(request: Request): P
   const created = typeof parsedAuthorizationHeader.params.created === 'string'
     ? new Date(parseInt(parsedAuthorizationHeader.params.created) * 1000)
     : undefined
-  const invocation: IHttpRequestCapabilityInvocation = {
+  const signatureInput = parsedAuthorizationHeader.params.headers
+  if (typeof signatureInput !== 'string') throw new Error(`failed to parse authorization header signatureInput`)
+  const invocation = {
     headerValue: authorizationHeader,
     id,
     capability: {
@@ -54,13 +56,12 @@ export async function createCapabilityInvocationFromRequest(request: Request): P
     },
     action: parsedInvocationHeader.params.action,
     proof: {
-      // @ts-expect-error not in types
       type: 'InvocationProofHttpSignature',
       verificationMethod: parsedAuthorizationHeader.params.keyId,
       proofValue: parsedAuthorizationHeader.params.signature,
       created,
       expires,
-      headers: parsedAuthorizationHeader.params.headers,
+      signatureInput,
       proofPurpose: 'capabilityInvocation'
     }
   }

@@ -33,7 +33,7 @@ export async function createRequestForCapabilityInvocation(url: URL, options: {
   headers?: Record<string, string>,
   action?: string,
   invocationSigner: ISigner,
-  body?: Blob | FormData,
+  body?: Blob,
 }) {
   const method = options.method || 'GET'
   const capabilityAction = options.action ?? method
@@ -47,6 +47,7 @@ export async function createRequestForCapabilityInvocation(url: URL, options: {
     invocationSigner: options.invocationSigner,
     method,
     url: url.toString(),
+    body: options.body,
   })
   return {
     method,

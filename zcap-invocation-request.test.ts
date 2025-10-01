@@ -5,6 +5,7 @@ import assert from "node:assert"
 import { getControllerOfDidKeyVerificationMethod } from "./did-key.ts"
 import { createDocumentLoader } from "./document-loader.ts"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519"
+import { createCapabilityInvocationFromRequest } from "./invocation-http-signature.ts"
 
 /** the parts of node:test these tests rely on */
 type Testing = Pick<typeof import('node:test'), 'describe' | 'test'>
@@ -59,6 +60,31 @@ async function test({ describe, test }: Testing) {
       assert.equal(request.method, 'GET')
       assert.ok(request.headers['authorization']?.startsWith('Signature keyId="'),
         `authorization header has scheme Signature`)
+    })
+
+    await test(`signs over content-type when options.body Blob is provided`, async t => {
+      const alice = await Ed25519Signer.generate()
+      const url = new URL('http://example.example')
+      const nonce = crypto.randomUUID()
+      const body = new Blob([nonce],{type:'text/plain'})
+      const request = await createRequestForCapabilityInvocation(url, {
+        invocationSigner: alice,
+        body,
+      })
+      const requestAuthorization = request.headers.authorization
+      assert.ok(requestAuthorization.includes('content-type'), `authorization header value MUST include content-type`)
+
+      // parse the requeset headers to an invocation
+      const invocation = await createCapabilityInvocationFromRequest({
+        headers: new Headers(request.headers),
+      })
+      assert.ok(!(invocation instanceof Error))
+      const {signatureInput} = invocation.proof
+      const signatureInputs = new Set(signatureInput.split(/\s+/))
+      const expectedSignatureInputs = ['(key-id)', '(created)', '(expires)', '(request-target)', 'host', 'capability-invocation', 'content-type', 'digest']
+      for (const param of expectedSignatureInputs) {
+        assert.ok(signatureInputs.has(param), `invocation signature MUST sign over ${param}`)
+      }
     })
   })
 
