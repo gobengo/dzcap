@@ -86,6 +86,34 @@ async function test({ describe, test }: Testing) {
         assert.ok(signatureInputs.has(param), `invocation signature MUST sign over ${param}`)
       }
     })
+
+    await test(`when options.body is a typeless Blob`, async t => {
+      const alice = await Ed25519Signer.generate()
+      const url = new URL('http://example.example')
+      const nonce = crypto.randomUUID()
+      // intentionally omit options.type
+      const body = new Blob([nonce])
+      const request = await createRequestForCapabilityInvocation(url, {
+        invocationSigner: alice,
+        body,
+      })
+      const requestAuthorization = request.headers.authorization
+      assert.ok(!requestAuthorization.includes('content-type'),
+        `authorization header value MUST NOT include content-type because body is typeless`)
+
+      // parse the requeset headers to an invocation
+      const invocation = await createCapabilityInvocationFromRequest({
+        headers: new Headers(request.headers),
+      })
+      assert.ok(!(invocation instanceof Error))
+      const {signatureInput} = invocation.proof
+      const signatureInputs = new Set(signatureInput.split(/\s+/))
+      assert.ok(!signatureInputs.has('content-type'), `signature does not sign over content-type, because options.body is typeless`)
+      const expectedSignatureInputs = ['(key-id)', '(created)', '(expires)', '(request-target)', 'host', 'capability-invocation', 'digest']
+      for (const param of expectedSignatureInputs) {
+        assert.ok(signatureInputs.has(param), `invocation signature MUST sign over ${param}`)
+      }
+    })
   })
 
 }
