@@ -1,7 +1,7 @@
 import { test } from "node:test"
 import assert from "node:assert"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519";
-import { invoke } from "./invocation.ts";
+import { invoke } from "./invocation.js";
 
 await test(`can create json invocation`, async t => {
   const key = await Ed25519Signer.generate()

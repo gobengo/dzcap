@@ -5,9 +5,9 @@ import {
   parseSignatureHeader
   // @ts-expect-error no types
 } from '@digitalbazaar/http-signature-header';
-import { type DIDKeyVerificationMethodId, isDidKeyVerificationMethodId } from './did.ts';
-import { type IDocumentLoader, verifyCapabilityInvocation } from './invocation-http-signature.ts';
-import type { ISigner, IZcapCapability } from './types.ts';
+import { type DIDKeyVerificationMethodId, isDidKeyVerificationMethodId } from './did.js';
+import { type IDocumentLoader, verifyCapabilityInvocation } from './invocation-http-signature.js';
+import type { ISigner, IZcapCapability } from './types.js';
 
 export { type IZcapCapability }
 

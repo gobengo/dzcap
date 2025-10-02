@@ -1,6 +1,6 @@
 import { describe, test } from "node:test"
 import assert from "node:assert"
-import { HttpSignatureAuthorization, UnixTimestamp } from "./http-signature.ts"
+import { HttpSignatureAuthorization, UnixTimestamp } from "./http-signature.js"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519"
 import { createRequestWithHttpSignature } from "authorization-signature"
 

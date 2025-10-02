@@ -56,7 +56,7 @@
   "scripts": {
     "eslint": "eslint",
     "lint": "npm run eslint",
-    "test": "node --test",
+    "test": "node --import tsx --test",
     "tsc": "tsc --build",
     "prepare": "npm run tsc"
   },

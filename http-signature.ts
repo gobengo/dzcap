@@ -2,8 +2,8 @@ import {
   parseRequest,
   // @ts-expect-error no types
 } from '@digitalbazaar/http-signature-header';
-import { base64urlToBase64, bytesFromBase64 } from "./base64.ts"
-import { type DIDKeyVerificationMethodId } from "./did.ts";
+import { base64urlToBase64, bytesFromBase64 } from "./base64.js"
+import { type DIDKeyVerificationMethodId } from "./did.js";
 import { getVerifierForKeyId, type ISignatureVerifier } from "@did.coop/did-key-ed25519/verifier"
 
 /**

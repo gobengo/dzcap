@@ -3,8 +3,8 @@ import path, { basename } from 'node:path';
 import os from 'node:os'
 import assert from "node:assert"
 import { type TestContext } from 'node:test';
-import { DZCAP_EXIT_CODE_OK, DzcapCLI } from './dzcap-cli.ts';
-import { withConsole } from './console-nodejs.ts';
+import { DZCAP_EXIT_CODE_OK, DzcapCLI } from './dzcap-cli.js';
+import { withConsole } from './console-nodejs.js';
 import { exec, execSync } from 'node:child_process';
 import { access, mkdtemp } from 'node:fs/promises';
 

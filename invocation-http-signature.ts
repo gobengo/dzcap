@@ -1,5 +1,5 @@
-import { type ICapabilityInvocation } from "./invocation.ts"
-import { type IZcapCapability } from "./zcap-invocation-request.ts";
+import { type ICapabilityInvocation } from "./invocation.js"
+import { type IZcapCapability } from "./zcap-invocation-request.js";
 
 // @ts-expect-error no types
 import { parseRequest, parseSignatureHeader } from '@digitalbazaar/http-signature-header';

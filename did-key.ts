@@ -3,7 +3,7 @@ import { Ed25519VerificationKey2020 } from '@digitalbazaar/ed25519-verification-
 
 // @ts-expect-error no types
 import * as didMethodKey from '@digitalbazaar/did-method-key';
-import { type DIDKeyVerificationMethodId, isDidKey } from './did.ts';
+import { type DIDKeyVerificationMethodId, isDidKey } from './did.js';
 
 const didKeyDriver = didMethodKey.driver()
 didKeyDriver.use({

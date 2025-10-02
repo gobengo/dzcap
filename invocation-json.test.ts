@@ -1,11 +1,11 @@
 import { test } from "node:test"
 import assert from "node:assert"
-import { invoke } from "./invocation.ts"
+import { invoke } from "./invocation.js"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519"
-import { InvocationJsonVerification } from "./invocation-json.ts"
-import { createDocumentLoader } from "./document-loader.ts"
-import { type ISigner, type RootZcapResolver } from "./types.ts"
-import { isRootZcapUrn } from "./index.ts"
+import { InvocationJsonVerification } from "./invocation-json.js"
+import { createDocumentLoader } from "./document-loader.js"
+import { type ISigner, type RootZcapResolver } from "./types.js"
+import { isRootZcapUrn } from "./index.js"
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 async function createExampleInvocation(url: URL, options:{

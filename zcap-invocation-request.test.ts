@@ -1,11 +1,11 @@
 #!/usr/bin/env node --test
 
-import { createRequestForCapabilityInvocation, ZcapInvocationRequest } from "./zcap-invocation-request.ts"
+import { createRequestForCapabilityInvocation, ZcapInvocationRequest } from "./zcap-invocation-request.js"
 import assert from "node:assert"
-import { getControllerOfDidKeyVerificationMethod } from "./did-key.ts"
-import { createDocumentLoader } from "./document-loader.ts"
+import { getControllerOfDidKeyVerificationMethod } from "./did-key.js"
+import { createDocumentLoader } from "./document-loader.js"
 import { Ed25519Signer } from "@did.coop/did-key-ed25519"
-import { createCapabilityInvocationFromRequest } from "./invocation-http-signature.ts"
+import { createCapabilityInvocationFromRequest } from "./invocation-http-signature.js"
 
 /** the parts of node:test these tests rely on */
 type Testing = Pick<typeof import('node:test'), 'describe' | 'test'>

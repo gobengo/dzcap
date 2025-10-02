@@ -8,8 +8,8 @@ import { existsSync, readFileSync, realpathSync } from "node:fs"
 import { parseArgs } from "node:util"
 import { SshpkSigner } from "@wallet.storage/did-sshpk"
 import sshpk from "sshpk";
-import * as delegation from "./delegation.ts"
-import { type IZcapCapability } from "./types.ts";
+import * as delegation from "./delegation.js"
+import { type IZcapCapability } from "./types.js";
 
 // common error codes for the dzcap command
 export const DZCAP_EXIT_CODE_OK = 0 as const
