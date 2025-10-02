@@ -1,5 +1,11 @@
 # dzcap
 
+## 1.3.1
+
+### Patch Changes
+
+- Fix borked 1.3.0 due to unbuilt ts. Don't use 1.3.0. Use 1.3.1 and up. Sorry.
+
 ## 1.3.0
 
 ### Minor Changes
