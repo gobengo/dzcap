@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import 'tsx'
 const cli = await import('../dzcap-cli.ts')
-const argv = process.argv
+const argv = globalThis?.process?.argv
+if (!argv) throw new Error(`unable to determine dzcap cli arguments`, { cause: { argv } })
 await cli.main({ argv })
