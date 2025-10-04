@@ -91,11 +91,7 @@ export async function verifyCapabilityInvocation(request: Request, options: {
 }) {
   const invocation = await createCapabilityInvocationFromRequest(request)
   if (invocation instanceof Error) throw invocation
-  if (new URL(request.url).protocol !== 'https:') {
-    // console.debug(`request url does not use https: protocol. zcaps are only allowed on https urls. verifyCapabilityInvocation will expect the capability to be invoked on the https: url.`, { "request.url": request.url })
-  }
-  // zcaps are only allowed over http uris so
-  const zcapInvocationTarget = urlWithProtocol(request.url, 'https:')
+  const zcapInvocationTarget = request.url
   const expectedHost = options.expectedHost ? options.expectedHost : request.headers.get('host')
   const verificationResult = await dbVerifyCapabilityInvocation({
     url: zcapInvocationTarget.toString(),

@@ -50,6 +50,34 @@ async function test({ describe, test }: Testing) {
     })
   })
 
+  await describe(`ZcapInvocationRequest.verified`, async () => {
+    /** test several valid invocationTargets */
+    for (const invocationTarget of [`http://localhost:8080`]) {
+      await test(`verifies zcap with invocationTarget=${invocationTarget}`, async (t) => {
+        const alice = await Ed25519Signer.generate()
+        const url = new URL(invocationTarget)
+        const documentLoader = createDocumentLoader(async (documentUrl) => {
+          if (documentUrl === `urn:zcap:root:${encodeURIComponent(url.toString())}`) {
+            return {
+              documentUrl,
+              document: {
+                "@context": "https://w3id.org/zcap/v1",
+                id: documentUrl,
+                invocationTarget: url.toString(),
+                controller: alice.controller,
+              },
+            }
+          }
+          throw new Error(`unable to load document: ${documentUrl}`, { cause: documentUrl })
+        })
+        const request = new Request(url, await createRequestForCapabilityInvocation(url, {
+          invocationSigner: alice,
+        }))
+        const verifiedInvocation = await ZcapInvocationRequest.verified(request, { documentLoader })
+      })
+    }
+  })
+
   await describe('createRequestForCapabilityInvocation', async () => {
     await test(`can create a request`, async t => {
       const alice = await Ed25519Signer.generate()
@@ -66,7 +94,7 @@ async function test({ describe, test }: Testing) {
       const alice = await Ed25519Signer.generate()
       const url = new URL('http://example.example')
       const nonce = crypto.randomUUID()
-      const body = new Blob([nonce],{type:'text/plain'})
+      const body = new Blob([nonce], { type: 'text/plain' })
       const request = await createRequestForCapabilityInvocation(url, {
         invocationSigner: alice,
         body,
@@ -79,7 +107,7 @@ async function test({ describe, test }: Testing) {
         headers: new Headers(request.headers),
       })
       assert.ok(!(invocation instanceof Error))
-      const {signatureInput} = invocation.proof
+      const { signatureInput } = invocation.proof
       const signatureInputs = new Set(signatureInput.split(/\s+/))
       const expectedSignatureInputs = ['(key-id)', '(created)', '(expires)', '(request-target)', 'host', 'capability-invocation', 'content-type', 'digest']
       for (const param of expectedSignatureInputs) {
@@ -106,7 +134,7 @@ async function test({ describe, test }: Testing) {
         headers: new Headers(request.headers),
       })
       assert.ok(!(invocation instanceof Error))
-      const {signatureInput} = invocation.proof
+      const { signatureInput } = invocation.proof
       const signatureInputs = new Set(signatureInput.split(/\s+/))
       assert.ok(!signatureInputs.has('content-type'), `signature does not sign over content-type, because options.body is typeless`)
       const expectedSignatureInputs = ['(key-id)', '(created)', '(expires)', '(request-target)', 'host', 'capability-invocation', 'digest']

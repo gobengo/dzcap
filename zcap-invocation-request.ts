@@ -64,13 +64,6 @@ export class ZcapInvocationRequest {
   static async verified(request: Request, options: {
     documentLoader: IDocumentLoader
   }): Promise<VerifiedZcapInvocationRequest> {
-    if (new URL(request.url).protocol !== 'https:') {
-      throw new Error(`request url must be 'https:' to use ZCAPs`, {
-        cause: {
-          url: request.url,
-        }
-      })
-    }
     await verifyCapabilityInvocation(
       request,
       {
