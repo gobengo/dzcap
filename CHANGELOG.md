@@ -1,5 +1,11 @@
 # dzcap
 
+## 1.4.0
+
+### Minor Changes
+
+- 9815841: zcap verification used to accept only https URIs as invocationTarget. Now it should allow pretty much any URI.
+
 ## 1.3.1
 
 ### Patch Changes
