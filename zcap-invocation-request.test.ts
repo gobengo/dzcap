@@ -76,6 +76,36 @@ async function test({ describe, test }: Testing) {
         const verifiedInvocation = await ZcapInvocationRequest.verified(request, { documentLoader })
       })
     }
+
+    await test(`verifies zcap when request.url is http but expectedTarget is https`, async (t) => {
+      const alice = await Ed25519Signer.generate()
+      const invocationTarget = new URL(`https://example.example/`)
+      const requestTarget = new URL(`http://example.example/`)
+      const capability = `urn:zcap:root:${encodeURIComponent(invocationTarget.toString())}`
+      const documentLoader = createDocumentLoader(async (documentUrl) => {
+        if (documentUrl === `urn:zcap:root:${encodeURIComponent(invocationTarget.toString())}`) {
+          return {
+            documentUrl,
+            document: {
+              "@context": "https://w3id.org/zcap/v1",
+              id: documentUrl,
+              invocationTarget: invocationTarget.toString(),
+              controller: alice.controller,
+            },
+          }
+        }
+        throw new Error(`unable to load document: ${documentUrl}`, { cause: documentUrl })
+      })
+      const headers = {
+        'x-forwarded-proto': `https`,
+      }
+      const request = new Request(requestTarget, await createRequestForCapabilityInvocation(new URL(requestTarget), {
+        capability,
+        invocationSigner: alice,
+        headers,
+      }))
+      const verifiedInvocation = await ZcapInvocationRequest.verified(request, { documentLoader, trustHeaderXForwardedProto: true })
+    })
   })
 
   await describe('createRequestForCapabilityInvocation', async () => {
