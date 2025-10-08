@@ -1,5 +1,11 @@
 # dzcap
 
+## 1.5.1
+
+### Patch Changes
+
+- Use @digitalbazaar/http-signature-zcap-invoke and @digitalbazaar/http-signature-zcap-verify from digitalbazaar, not a custom fork, now that there are new releases including the same commits
+
 ## 1.5.0
 
 ### Minor Changes
