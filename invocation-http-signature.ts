@@ -1,5 +1,5 @@
 import { type ICapabilityInvocation } from "./invocation.js"
-import { type IZcapCapability } from "./zcap-invocation-request.js";
+import { determineExpectedTarget, type IZcapCapability } from "./zcap-invocation-request.js";
 
 // @ts-expect-error no types
 import { parseRequest, parseSignatureHeader } from '@digitalbazaar/http-signature-header';
@@ -81,20 +81,26 @@ export type IDocumentLoader = (url: string) => Promise<{
  * @param options.expectedTarget - request target that the request MUST target
  * @param options.expectedRootCapability - request invocation capability MUST match this
  * @param options.expectedAction - request invocation capability MUST invoke this action
+ * @param options.trustHeaderXForwardedProto - whether to trust request headers x-forwarded-proto
  */
 export async function verifyCapabilityInvocation(request: Request, options: {
   documentLoader: IDocumentLoader
   expectedHost?: string
-  expectedTarget: string
-  expectedRootCapability: string | IZcapCapability[]
+  expectedTarget?: string
+  expectedRootCapability?: string | IZcapCapability[]
   expectedAction?: string
+  trustHeaderXForwardedProto: boolean
 }) {
+  const { documentLoader, trustHeaderXForwardedProto } = options
+  const effectiveUrl = determineExpectedTarget(request, { trustHeaderXForwardedProto })
+  const expectedTarget = options.expectedTarget ?? effectiveUrl
   const invocation = await createCapabilityInvocationFromRequest(request)
   if (invocation instanceof Error) throw invocation
-  const zcapInvocationTarget = request.url
   const expectedHost = options.expectedHost ? options.expectedHost : request.headers.get('host')
+  const expectedRootCapability = options.expectedRootCapability ?? `urn:zcap:root:${encodeURIComponent(expectedTarget.toString())}`
   const verificationResult = await dbVerifyCapabilityInvocation({
-    url: zcapInvocationTarget.toString(),
+    documentLoader,
+    url: effectiveUrl.toString(),
     method: request.method,
     suite: new Ed25519Signature2020(),
     headers: Object.fromEntries([...request.headers as unknown as { [Symbol.iterator]: () => IterableIterator<[string, string]> }]),
@@ -106,7 +112,8 @@ export async function verifyCapabilityInvocation(request: Request, options: {
       return getVerifierForKeyId(keyId)
     },
     expectedHost,
-    ...options,
+    expectedRootCapability,
+    expectedTarget: expectedTarget.toString(),
     expectedAction: options.expectedAction || request.method,
   })
   if (verificationResult.error) {
